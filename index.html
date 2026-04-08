@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <!-- PWA Meta -->
+    <meta name="theme-color" content="#1A365D" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LifeUp Kids" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
+
+    <!-- SEO -->
+    <meta name="description" content="LifeUp Kids - 유전자 분석 기반 초개인화 양육·교육·건강 코칭 플랫폼. 850+ 분석 항목으로 우리 아이 맞춤 인생 설계." />
+    <meta name="keywords" content="유전자분석,아이코칭,양육,교육,건강,진로,LifeUp,키즈,맞춤코칭" />
+    <meta property="og:title" content="LifeUp Kids · 우리 아이 인생 설계 파트너" />
+    <meta property="og:description" content="유전자 분석 기반 초개인화 양육·교육·건강 코칭 플랫폼" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/icons/icon-512.png" />
+
+    <title>LifeUp Kids · 우리 아이 인생 설계 파트너</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('✅ SW registered:', reg.scope))
+            .catch((err) => console.log('❌ SW registration failed:', err));
+        });
+      }
+    </script>
+  </body>
+</html>
