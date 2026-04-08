@@ -27,36 +27,36 @@ export default function LandingPage({ onEnter }) {
 
       {/* ========== 1. HERO SECTION ========== */}
       <section style={{ 
-        background:'linear-gradient(165deg, #0B1929 0%, #1A365D 35%, #2D4A7A 65%, #4A6FA5 100%)',
+        background:'linear-gradient(165deg, #FAFBFF 0%, #F5F0FF 35%, #FFF0F5 65%, #FAFBFF 100%)',
         minHeight:'auto', display:'flex', flexDirection:'column', justifyContent:'center',
         position:'relative', overflow:'hidden', padding:'48px 20px 32px',
       }}>
         {/* Floating DNA particles */}
         {[...Array(6)].map((_,i) => (
           <div key={i} style={{
-            position:'absolute', borderRadius:'50%', opacity:0.06,
+            position:'absolute', borderRadius:'50%', opacity:i%2===0 ? 0.08 : 0.05,
             width: 80+i*60, height: 80+i*60,
             left: `${10+i*15}%`, top: `${15+i*12}%`,
-            background:`radial-gradient(circle, ${['#6366F1','#EC4899','#22C55E','#F59E0B','#3B82F6','#8B5CF6'][i]} 0%, transparent 70%)`,
+            background:`radial-gradient(circle, ${['#b794f4','#fe8dba','#3cddc7','#f6e05e','#6d4ca6','#f687b3'][i]} 0%, transparent 70%)`,
             animation: `float ${6+i*2}s ease-in-out infinite alternate`,
           }}/>
         ))}
 
         <div style={{ position:'relative', zIndex:1, maxWidth:600, margin:'0 auto', textAlign:'center' }}>
           {/* Brand */}
-          <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'rgba(255,255,255,0.08)', borderRadius:99, padding:'8px 18px', marginBottom:24, backdropFilter:'blur(10px)' }}>
-            <Dna size={18} color="#8B5CF6"/>
-            <span style={{ fontSize:13, fontWeight:700, color:'rgba(255,255,255,0.9)', letterSpacing:1 }}>LIFEUP KIDS COACHING</span>
+          <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'rgba(255,255,255,0.7)', borderRadius:99, padding:'8px 18px', marginBottom:24, backdropFilter:'blur(10px)', border:'1px solid rgba(183,148,244,0.3)' }}>
+            <Dna size={18} color="#6d4ca6"/>
+            <span style={{ fontSize:13, fontWeight:800, color:'#6d4ca6', letterSpacing:1 }}>LIFEUP KIDS COACHING</span>
           </div>
 
-          <h1 style={{ fontSize:32, fontWeight:900, color:'white', lineHeight:1.3, margin:'0 0 16px', fontFamily:'Manrope, sans-serif' }}>
+          <h1 style={{ fontSize:32, fontWeight:900, color:'#2e2f2d', lineHeight:1.3, margin:'0 0 16px', fontFamily:'Manrope, sans-serif' }}>
             유전자가 알려주는<br/>
-            <span style={{ background:'linear-gradient(90deg,#8B5CF6,#EC4899,#F59E0B)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>우리 아이 인생 설계도</span>
+            <span style={{ background:'linear-gradient(135deg, #6d4ca6, #b794f4, #fe8dba)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>우리 아이 인생 설계도</span>
           </h1>
 
-          <p style={{ fontSize:16, color:'rgba(255,255,255,0.75)', lineHeight:1.7, margin:'0 0 32px' }}>
+          <p style={{ fontSize:16, color:'#5b5c5a', lineHeight:1.7, margin:'0 0 32px' }}>
             유전자 분석을 기반으로 양육 · 교육 · 대화법 · 건강 · 영양까지<br/>
-            자녀가 20세가 되기까지의 <strong style={{color:'white'}}>모든 성공 포트폴리오</strong>를<br/>
+            자녀가 20세가 되기까지의 <strong style={{color:'#6d4ca6'}}>모든 성공 포트폴리오</strong>를<br/>
             만들어가는 초개인화 코칭 설계 공간
           </p>
 
@@ -71,7 +71,7 @@ export default function LandingPage({ onEnter }) {
             무료로 시작하기 <ArrowRight size={20}/>
           </div>
 
-          <div style={{ fontSize:12, color:'rgba(255,255,255,0.4)', marginTop:14 }}>
+          <div style={{ fontSize:12, color:'#7b7482', marginTop:14 }}>
             이미 62,000+ 가정이 함께하고 있어요
           </div>
 
@@ -83,9 +83,9 @@ export default function LandingPage({ onEnter }) {
               {v:'850+',l:'유전자 항목'},
               {v:'24h',l:'AI 코칭'},
             ].map((s,i) => (
-              <div key={i} style={{ background:'rgba(255,255,255,0.06)', borderRadius:16, padding:'14px 16px', backdropFilter:'blur(10px)', border:'1px solid rgba(255,255,255,0.08)' }}>
-                <div style={{ fontSize:20, fontWeight:900, color:'white', fontFamily:'Manrope' }}>{s.v}</div>
-                <div style={{ fontSize:10, color:'rgba(255,255,255,0.6)', marginTop:2 }}>{s.l}</div>
+              <div key={i} style={{ background:'rgba(255,255,255,0.6)', borderRadius:16, padding:'14px 16px', backdropFilter:'blur(10px)', border:'1px solid rgba(183,148,244,0.15)', boxShadow:'0 4px 16px rgba(0,0,0,0.03)' }}>
+                <div style={{ fontSize:20, fontWeight:900, color:'#2e2f2d', fontFamily:'Manrope' }}>{s.v}</div>
+                <div style={{ fontSize:10, color:'#7b7482', marginTop:2 }}>{s.l}</div>
               </div>
             ))}
           </div>
@@ -93,8 +93,8 @@ export default function LandingPage({ onEnter }) {
 
         {/* Scroll indicator */}
         <div style={{ position:'absolute', bottom:30, left:'50%', transform:'translateX(-50%)', textAlign:'center' }}>
-          <div style={{ fontSize:11, color:'rgba(255,255,255,0.4)', marginBottom:6 }}>아래로 스크롤</div>
-          <ChevronDown size={20} color="rgba(255,255,255,0.3)" style={{ animation:'bounce 2s infinite' }}/>
+          <div style={{ fontSize:11, color:'#adadab', marginBottom:6 }}>아래로 스크롤</div>
+          <ChevronDown size={20} color="#b794f4" style={{ animation:'bounce 2s infinite' }}/>
         </div>
       </section>
 
@@ -286,53 +286,53 @@ export default function LandingPage({ onEnter }) {
       </section>
 
       {/* ========== 6. 회사 비전 ========== */}
-      <section id="sec6" data-animate style={{ padding:'40px 20px', background:'linear-gradient(165deg,#0B1929,#1A365D)', color:'white', ...animStyle('sec6') }}>
+      <section id="sec6" data-animate style={{ padding:'40px 20px', background:'linear-gradient(165deg,#F5F0FF,#FFF0F5)', color:'#2e2f2d', ...animStyle('sec6') }}>
         <div style={{ maxWidth:600, margin:'0 auto', textAlign:'center' }}>
-          <div style={{ display:'inline-flex', alignItems:'center', gap:6, background:'rgba(255,255,255,0.08)', borderRadius:99, padding:'6px 14px', marginBottom:20, backdropFilter:'blur(10px)' }}>
-            <Zap size={14} color="#F59E0B"/>
-            <span style={{ fontSize:12, fontWeight:700, color:'#F59E0B' }}>OUR VISION</span>
+          <div style={{ display:'inline-flex', alignItems:'center', gap:6, background:'rgba(255,255,255,0.8)', borderRadius:99, padding:'6px 14px', marginBottom:20, backdropFilter:'blur(10px)', border:'1px solid rgba(236,72,153,0.2)' }}>
+            <Zap size={14} color="#EC4899"/>
+            <span style={{ fontSize:12, fontWeight:700, color:'#EC4899' }}>OUR VISION</span>
           </div>
 
           <h2 style={{ fontSize:28, fontWeight:900, lineHeight:1.3, margin:'0 0 16px' }}>
             인생 설계도,<br/>인생 나침반을<br/>
-            <span style={{ background:'linear-gradient(90deg,#F59E0B,#EC4899)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>과학으로 제시합니다</span>
+            <span style={{ background:'linear-gradient(135deg,#6d4ca6,#b794f4,#fe8dba)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>과학으로 제시합니다</span>
           </h2>
 
-          <p style={{ fontSize:14, color:'rgba(255,255,255,0.7)', lineHeight:1.7, margin:'0 0 36px' }}>
+          <p style={{ fontSize:14, color:'#5b5c5a', lineHeight:1.7, margin:'0 0 36px' }}>
             라이프업 코칭은 인류 역사상 가장 위대한 과업을 수행합니다.<br/>
-            아이의 유전자 속에 숨겨진 <strong style={{color:'white'}}>인생의 나침반</strong>을 발견하고,<br/>
-            그 방향으로 향하는 <strong style={{color:'white'}}>인생 설계도</strong>를 구축합니다.
+            아이의 유전자 속에 숨겨진 <strong style={{color:'#6d4ca6'}}>인생의 나침반</strong>을 발견하고,<br/>
+            그 방향으로 향하는 <strong style={{color:'#6d4ca6'}}>인생 설계도</strong>를 구축합니다.
           </p>
 
           {/* 비전 카드들 */}
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:36, textAlign:'left' }}>
             {[
-              { icon:<Compass size={24} color="#F59E0B"/>, title:'인생 나침반', desc:'유전자가 알려주는 아이의 방향. 850+ 항목 과학 분석' },
-              { icon:<Target size={24} color="#EC4899"/>, title:'인생 설계도', desc:'0~20세 성장 로드맵. 연령별 맞춤 코칭 전략 수립' },
+              { icon:<Compass size={24} color="#F59E0B"/>, title:'인생 나침반', desc:'유전자가 알려주는 방향. 850+ 항목 딥러닝 분석' },
+              { icon:<Target size={24} color="#EC4899"/>, title:'인생 설계도', desc:'0~20세 성장 로드맵. 성향별 맞춤 교육 코칭 수립' },
               { icon:<Award size={24} color="#22C55E"/>, title:'성공 포트폴리오', desc:'매월 기록되는 성장일기. 1권의 인생 책으로 완성' },
-              { icon:<TrendingUp size={24} color="#3B82F6"/>, title:'AI 시대 역량', desc:'대체 불가능 5대 역량 중심의 미래형 인재 양성' },
+              { icon:<TrendingUp size={24} color="#3B82F6"/>, title:'AI 시대 역량', desc:'대체 불가능 5대 역량(창의, 공감 등) 집중 양성' },
             ].map((v,i) => (
-              <div key={i} style={{ background:'rgba(255,255,255,0.05)', borderRadius:20, padding:20, border:'1px solid rgba(255,255,255,0.08)' }}>
+              <div key={i} style={{ background:'white', borderRadius:20, padding:20, border:'1px solid rgba(183,148,244,0.15)', boxShadow:'0 4px 16px rgba(0,0,0,0.03)' }}>
                 <div style={{ marginBottom:12 }}>{v.icon}</div>
-                <div style={{ fontSize:15, fontWeight:700, marginBottom:6 }}>{v.title}</div>
-                <div style={{ fontSize:12, color:'rgba(255,255,255,0.6)', lineHeight:1.5 }}>{v.desc}</div>
+                <div style={{ fontSize:15, fontWeight:700, marginBottom:6, color:'#2e2f2d' }}>{v.title}</div>
+                <div style={{ fontSize:12, color:'#7b7482', lineHeight:1.5 }}>{v.desc}</div>
               </div>
             ))}
           </div>
 
           {/* 임팩트 숫자 */}
-          <div style={{ background:'rgba(255,255,255,0.05)', borderRadius:24, padding:28, border:'1px solid rgba(255,255,255,0.08)' }}>
-            <div style={{ fontSize:16, fontWeight:700, marginBottom:20, color:'#F59E0B' }}>🌟 라이프업의 임팩트</div>
+          <div style={{ background:'white', borderRadius:24, padding:28, border:'1px solid rgba(183,148,244,0.15)', boxShadow:'0 4px 16px rgba(0,0,0,0.03)' }}>
+            <div style={{ fontSize:16, fontWeight:700, marginBottom:20, color:'#6d4ca6' }}>🌟 라이프업의 임팩트</div>
             <div style={{ display:'flex', justifyContent:'center', gap:24 }}>
               {[
                 {v:'62,000+',l:'가정 코칭',sub:'지난 3년간'},
-                {v:'150만+',l:'분석 보고서',sub:'누적 생성'},
+                {v:'150만+',l:'분석 리포트',sub:'누적 생성'},
                 {v:'340+',l:'협력 기관',sub:'학원/센터'},
               ].map((s,i) => (
                 <div key={i}>
-                  <div style={{ fontSize:24, fontWeight:900, fontFamily:'Manrope', background:'linear-gradient(90deg,#F59E0B,#EC4899)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>{s.v}</div>
-                  <div style={{ fontSize:13, fontWeight:600, marginTop:4 }}>{s.l}</div>
-                  <div style={{ fontSize:10, color:'rgba(255,255,255,0.4)' }}>{s.sub}</div>
+                  <div style={{ fontSize:24, fontWeight:900, fontFamily:'Manrope', background:'linear-gradient(135deg,#6d4ca6,#fe8dba)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>{s.v}</div>
+                  <div style={{ fontSize:13, fontWeight:600, marginTop:4, color:'#2e2f2d' }}>{s.l}</div>
+                  <div style={{ fontSize:10, color:'#adadab' }}>{s.sub}</div>
                 </div>
               ))}
             </div>

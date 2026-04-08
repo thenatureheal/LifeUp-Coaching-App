@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ChatBot from './components/ChatBot';
+import AdBanner from './components/AdBanner';
 import { ToastProvider } from './components/Toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ShopPage from './pages/ShopPage';
