@@ -25,6 +25,23 @@ export default function LoginPage({ onLogin, onGoToSignup, onBack }) {
   };
 
   const handleGoogleLogin = async () => {
+    // 1. 인앱 브라우저 감지 (Google OAuth 차단 대응)
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isKakaotalk = /kakaotalk/i.test(userAgent);
+    const isInApp = /kakaotalk|instagram|fbav|line|naver/i.test(userAgent);
+    const isAndroid = /android/i.test(userAgent);
+
+    if (isInApp) {
+      if (isKakaotalk && isAndroid) {
+        // 안드로이드 카카오톡: 즉시 외부 크롬 브라우저로 이탈
+        window.location.href = `intent://${window.location.href.replace(/https?:\/\//i, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+        return;
+      }
+      // 그 외 인앱 브라우저 (iOS 카카오, 인스타 등): 외부 브라우저 사용 안내
+      alert(`[안내] 현재 브라우저에서는 구글 보안 정책으로 인해 로그인이 제한됩니다.\n\n화면 우측 하단(또는 상단)의 [⠇] 메뉴 버튼을 눌러 '다른 브라우저로 열기(Safari/Chrome 등)'를 선택하신 후 다시 시도해주세요.`);
+      return;
+    }
+
     setError('');
     try {
       await loginWithGoogle();
