@@ -5,7 +5,8 @@ import {
   signInWithPopup, 
   GoogleAuthProvider, 
   signOut, 
-  onAuthStateChanged 
+  onAuthStateChanged,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -25,10 +26,10 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // 이메일 회원가입
-  async function signup(email, password, name) {
+  async function signup(email, password, name, childInfo = null) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     // 회원가입 성공 시 Firestore에 기본 프로필 저장
-    await setDoc(doc(db, "users", userCredential.user.uid), {
+    const userData = {
       uid: userCredential.user.uid,
       email: email,
       name: name,
@@ -36,7 +37,12 @@ export function AuthProvider({ children }) {
       settings: {
         pushEnabled: false
       }
-    });
+    };
+    if (childInfo) {
+      userData.children = [childInfo]; // 첫 번째 자녀 정보 저장
+    }
+    
+    await setDoc(doc(db, "users", userCredential.user.uid), userData);
     return userCredential;
   }
 
@@ -73,6 +79,11 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  // 비밀번호 재설정
+  function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email);
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -87,7 +98,8 @@ export function AuthProvider({ children }) {
     signup,
     login,
     loginWithGoogle,
-    logout
+    logout,
+    resetPassword
   };
 
   return (

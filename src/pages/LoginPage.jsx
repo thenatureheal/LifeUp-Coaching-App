@@ -8,7 +8,7 @@ export default function LoginPage({ onLogin, onGoToSignup, onBack }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, resetPassword } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,6 +48,27 @@ export default function LoginPage({ onLogin, onGoToSignup, onBack }) {
       onLogin && onLogin();
     } catch (err) {
       setError('구글 로그인 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setError('비밀번호를 재설정할 이메일 주소를 입력해주세요.');
+      return;
+    }
+    setError('');
+    try {
+      await resetPassword(email);
+      alert('비밀번호 재설정 이메일을 발송했습니다. 메일함을 확인해주세요.');
+    } catch (err) {
+      console.error(err);
+      if (err.code === 'auth/user-not-found') {
+        setError('가입되지 않은 이메일입니다.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('이메일 형식이 올바르지 않습니다.');
+      } else {
+        setError('비밀번호 재설정 이메일 발송에 실패했습니다.');
+      }
     }
   };
 
@@ -125,7 +146,7 @@ export default function LoginPage({ onLogin, onGoToSignup, onBack }) {
 
         {/* Forgot password */}
         <div style={styles.forgotRow}>
-          <button type="button" style={styles.forgotBtn}>비밀번호 찾기</button>
+          <button type="button" onClick={handleResetPassword} style={styles.forgotBtn}>비밀번호 찾기</button>
         </div>
 
         {/* Login Button */}

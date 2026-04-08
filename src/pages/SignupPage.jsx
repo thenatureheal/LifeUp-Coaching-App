@@ -58,12 +58,29 @@ export default function SignupPage({ onComplete, onGoToLogin, onBack }) {
       }
       setStep(2);
     } else if (step === 2) {
+      if (!formData.childName || !formData.childBirthdate || !formData.childGender) {
+        setError('아이 정보를 모두 입력해주세요.');
+        return;
+      }
       setIsLoading(true);
       try {
-        await signup(formData.email, formData.password, formData.name);
+        await signup(formData.email, formData.password, formData.name, {
+          childName: formData.childName,
+          childBirthdate: formData.childBirthdate,
+          childGender: formData.childGender
+        });
         setStep(3);
       } catch (err) {
-        setError(err.message.includes('email-already-in-use') ? '이미 가입된 이메일입니다.' : '회원가입에 실패했습니다.');
+        console.error('Signup error:', err);
+        if (err.code === 'auth/email-already-in-use') {
+          setError('이미 가입된 이메일입니다.');
+        } else if (err.code === 'auth/weak-password') {
+          setError('비밀번호는 6자리 이상이어야 합니다.');
+        } else if (err.code === 'auth/invalid-email') {
+          setError('올바르지 않은 이메일 형식입니다.');
+        } else {
+          setError(`가입 실패: ${err.message || err.code}`);
+        }
       } finally {
         setIsLoading(false);
       }
