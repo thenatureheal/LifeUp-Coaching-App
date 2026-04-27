@@ -68,7 +68,7 @@ export default function LandingPage({ onEnter }) {
             cursor:'pointer', boxShadow:'0 8px 30px rgba(99,102,241,0.4)',
             transition:'all 0.3s',
           }}>
-            무료로 시작하기 <ArrowRight size={20}/>
+            나의 결과, 나의 코칭보기 <ArrowRight size={20}/>
           </div>
 
           <div style={{ fontSize:12, color:'#7b7482', marginTop:14 }}>
@@ -409,7 +409,7 @@ export default function LandingPage({ onEnter }) {
             padding:'18px 48px', borderRadius:99, fontSize:18, fontWeight:800,
             cursor:'pointer', boxShadow:'0 10px 40px rgba(26,54,93,0.3)',
           }}>
-            🧬 앱 시작하기
+            🧬 나의 결과, 나의 코칭보기
           </div>
 
           <div style={{ marginTop:20, fontSize:12, color:'#74777F' }}>

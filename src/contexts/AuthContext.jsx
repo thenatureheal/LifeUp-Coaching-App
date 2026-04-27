@@ -23,6 +23,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // 이메일 회원가입
@@ -36,7 +37,8 @@ export function AuthProvider({ children }) {
       createdAt: new Date(),
       settings: {
         pushEnabled: false
-      }
+      },
+      hasAnalysis: false
     };
     if (childInfo) {
       userData.children = [childInfo]; // 첫 번째 자녀 정보 저장
@@ -68,7 +70,8 @@ export function AuthProvider({ children }) {
         createdAt: new Date(),
         settings: {
           pushEnabled: false
-        }
+        },
+        hasAnalysis: false
       });
     }
     return userCredential;
@@ -85,8 +88,23 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          } else {
+            setUserData(null);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setUserData(null);
+        }
+      } else {
+        setUserData(null);
+      }
       setLoading(false);
     });
 
@@ -95,6 +113,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    userData,
     signup,
     login,
     loginWithGoogle,

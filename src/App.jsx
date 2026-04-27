@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, LineChart, CheckCircle, User as UserIcon, Bell, Apple, MessageCircle, BookOpen, CheckCircle2, Circle, XCircle, Moon, Code2, GraduationCap, Trophy, ExternalLink, BrainCircuit, Blocks, Target, Lightbulb, CalendarHeart } from 'lucide-react';
+import { Home, LineChart, CheckCircle, User as UserIcon, Bell, Apple, MessageCircle, BookOpen, CheckCircle2, Circle, XCircle, Moon, Code2, GraduationCap, Trophy, ExternalLink, BrainCircuit, Blocks, Target, Lightbulb, CalendarHeart, Dna, ArrowRight } from 'lucide-react';
 import AnalysisPage from './pages/AnalysisPage';
 import CoachingPage from './pages/CoachingPage';
 import EduPage from './pages/EduPage';
@@ -17,6 +17,35 @@ import ShopPage from './pages/ShopPage';
 import CheckoutPage from './pages/CheckoutPage';
 
 function HomePage({ onNavigate }) {
+  const { userData } = useAuth();
+
+  if (userData && userData.hasAnalysis === false) {
+    return (
+      <div style={{ padding: '40px 20px', textAlign: 'center', height: '100%', minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <Dna size={48} color="#D4D4D4" style={{ marginBottom: 20 }} />
+        <h2 style={{ fontSize: 22, fontWeight: 800, marginBottom: 12, color: '#1A1C1C' }}>아직 분석과 코칭을 신청하지 않았습니다</h2>
+        <p style={{ fontSize: 14, color: '#74777F', marginBottom: 32, lineHeight: 1.6 }}>
+          아이의 유전자 속에 숨겨진 가능성,<br/>
+          지금 바로 확인하고 맞춤 코칭을 시작해 보세요.
+        </p>
+        <div onClick={() => onNavigate('shop')} style={{
+          background: 'linear-gradient(135deg,#6366F1,#8B5CF6)',
+          color: 'white',
+          padding: '16px 32px',
+          borderRadius: 99,
+          fontWeight: 700,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          cursor: 'pointer',
+          boxShadow: '0 8px 24px rgba(99,102,241,0.3)'
+        }}>
+          분석 키트 구매/신청하기 <ArrowRight size={18} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Header Profile & Role Model Section */}
