@@ -322,17 +322,26 @@ function AppContent() {
   const [selectedKit, setSelectedKit] = useState(null);
   const { currentUser, logout } = useAuth();
 
+  // Spring Boot에서 임베드된 모드인지 감지
+  const isEmbedded = window.location.pathname.startsWith('/app') || 
+                     new URLSearchParams(window.location.search).get('embedded') === 'true';
+
   React.useEffect(() => {
+    // 임베드 모드: Spring Boot에서 이미 인증됨 → 바로 홈으로
+    if (isEmbedded && ['landing', 'login', 'signup'].includes(page)) {
+      setPage('home');
+      return;
+    }
     // 이미 인증된 유저가 퍼블릭 페이지에 있다면 홈으로
     if (currentUser && ['landing', 'login', 'signup'].includes(page)) {
       setPage('home');
     }
-    // 미인증 유저가 보호된 페이지에 있다면 랜딩으로
-    else if (!currentUser && !['landing', 'login', 'signup', 'shop', 'checkout'].includes(page)) {
+    // 미인증 유저가 보호된 페이지에 있다면 랜딩으로 (임베드 모드에서는 제외)
+    else if (!currentUser && !isEmbedded && !['landing', 'login', 'signup', 'shop', 'checkout'].includes(page)) {
       // (스토어 관련은 로그인하지 않아도 볼 수 있도록 허용하거나, 로그인 요구 시 includes에서 빼기. 일단 로그인 안 해도 접근 불가로 통일)
       setPage('landing');
     }
-  }, [currentUser, page]);
+  }, [currentUser, page, isEmbedded]);
 
   return (
     <div className="app-container">

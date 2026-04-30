@@ -1,15 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  signOut, 
-  onAuthStateChanged,
-  sendPasswordResetEmail
-} from 'firebase/auth';
-import { auth, db } from '../firebase';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
@@ -26,99 +15,62 @@ export function AuthProvider({ children }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 이메일 회원가입
-  async function signup(email, password, name, childInfo = null) {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    // 회원가입 성공 시 Firestore에 기본 프로필 저장
-    const userData = {
-      uid: userCredential.user.uid,
-      email: email,
-      name: name,
-      createdAt: new Date(),
-      settings: {
-        pushEnabled: false
+  // 이메일 로그인 (Spring Boot /login API 호출)
+  async function login(email, password) {
+    // 실제로는 Spring Security form login 또는 /api/auth/login을 사용
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
-      hasAnalysis: false
-    };
-    if (childInfo) {
-      userData.children = [childInfo]; // 첫 번째 자녀 정보 저장
+      body: JSON.stringify({ username: email, password })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Login failed');
     }
     
-    await setDoc(doc(db, "users", userCredential.user.uid), userData);
-    return userCredential;
+    await fetchCurrentUser();
+    return true;
   }
 
-  // 이메일 로그인
-  function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+  // 로그아웃 (Spring Boot /logout API 호출)
+  async function logout() {
+    await fetch('/logout', { method: 'POST' });
+    setCurrentUser(null);
+    setUserData(null);
   }
 
-  // 구글 로그인
-  async function loginWithGoogle() {
-    const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup(auth, provider);
-    
-    // 구글 로그인 성공 시, Firestore 문서가 없으면 생성
-    const userDocRef = doc(db, "users", userCredential.user.uid);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        uid: userCredential.user.uid,
-        email: userCredential.user.email,
-        name: userCredential.user.displayName || "구글 회원",
-        createdAt: new Date(),
-        settings: {
-          pushEnabled: false
-        },
-        hasAnalysis: false
-      });
+  // 현재 유저 정보 가져오기
+  async function fetchCurrentUser() {
+    try {
+      const response = await fetch('/api/auth/me');
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentUser({ uid: data.uid, email: data.email });
+        setUserData(data);
+      } else {
+        setCurrentUser(null);
+        setUserData(null);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setCurrentUser(null);
+      setUserData(null);
+    } finally {
+      setLoading(false);
     }
-    return userCredential;
-  }
-
-  // 로그아웃
-  function logout() {
-    return signOut(auth);
-  }
-
-  // 비밀번호 재설정
-  function resetPassword(email) {
-    return sendPasswordResetEmail(auth, email);
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-      if (user) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            setUserData(userDoc.data());
-          } else {
-            setUserData(null);
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setUserData(null);
-        }
-      } else {
-        setUserData(null);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
+    fetchCurrentUser();
   }, []);
 
   const value = {
     currentUser,
     userData,
-    signup,
     login,
-    loginWithGoogle,
     logout,
-    resetPassword
   };
 
   return (
