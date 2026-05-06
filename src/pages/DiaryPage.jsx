@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ChevronLeft, Target, Plus, CheckCircle2, Circle, Clock, Edit3, Star, Sparkles, Camera, Download, BookOpen, X, Heart, MessageCircle, Send, Users, Share2, Bookmark, MoreHorizontal } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import AdBanner from '../components/AdBanner';
 
 const tabs = [
@@ -12,6 +13,7 @@ const tabs = [
 const catColors = { 학습:'#6366F1', 학원:'#3B82F6', 독서:'#8B5CF6', 건강:'#EF4444', 활동:'#EC4899', 운동:'#10B981' };
 
 export default function DiaryPage({ onBack }) {
+  const { userData } = useAuth();
   const [tab, setTab] = useState('goals');
   const [goalPhotos, setGoalPhotos] = useState({});
   const [issuePhotos, setIssuePhotos] = useState({});
@@ -211,8 +213,8 @@ export default function DiaryPage({ onBack }) {
       <div style={{ padding:'32px 24px 12px', display:'flex', alignItems:'center', gap:12 }}>
         <div onClick={onBack} style={{ cursor:'pointer' }}><ChevronLeft size={24} color="#1A365D"/></div>
         <div style={{ flex:1 }}>
-          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>이달의 성장일기</h2>
-          <div style={{ fontSize:12, color:'#43474E', marginTop:2 }}>윤서 (7세) · {month}</div>
+          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>환영합니다, {userData?.name || '회원'}님</h2>
+          <div style={{ fontSize:12, color:'#43474E', marginTop:2 }}>이달의 성장일기</div>
         </div>
       </div>
 

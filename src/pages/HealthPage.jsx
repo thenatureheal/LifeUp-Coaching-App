@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Pill, Apple, Dumbbell, ShieldCheck, Clock, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
 import { healthData } from '../data/healthData';
+import { useAuth } from '../contexts/AuthContext';
 
 const tabs = [
   { k:'suppl', l:'영양제', I:Pill },
@@ -12,6 +13,7 @@ const tabs = [
 const priorityColor = { high:'#EF4444', medium:'#F59E0B', low:'#22C55E' };
 
 export default function HealthPage({ onBack }) {
+  const { userData } = useAuth();
   const [tab, setTab] = useState('suppl');
   const d = healthData;
 
@@ -21,8 +23,8 @@ export default function HealthPage({ onBack }) {
       <div style={{ padding:'32px 24px 12px', display:'flex', alignItems:'center', gap:12 }}>
         <div onClick={onBack} style={{ cursor:'pointer' }}><ChevronLeft size={24} color="#1A365D"/></div>
         <div>
-          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>영양 및 건강케어 알림</h2>
-          <div style={{ fontSize:12, color:'#43474E', marginTop:2 }}>{d.child.name} ({d.child.age}세) · 유전자 맞춤 관리</div>
+          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>환영합니다, {userData?.name || '회원'}님</h2>
+          <div style={{ fontSize:12, color:'#43474E', marginTop:2 }}>영양 및 건강케어 알림</div>
         </div>
       </div>
 

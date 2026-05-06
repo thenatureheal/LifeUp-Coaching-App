@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, BookOpen, GraduationCap, Compass, MessageSquare, Star, Clock, MapPin, Flame, Trophy, User as UserIcon } from 'lucide-react';
 import { eduData } from '../data/eduData';
+import { useAuth } from '../contexts/AuthContext';
 import AdBanner from '../components/AdBanner';
 
 const sts = { strength:{c:'#22C55E',b:'#F0FDF4',l:'강점'}, normal:{c:'#3B82F6',b:'#EFF6FF',l:'보통'}, attention:{c:'#F59E0B',b:'#FFFBEB',l:'관리필요'} };
@@ -15,6 +16,7 @@ const tabs = [
 ];
 
 export default function EduPage({ onBack }) {
+  const { userData } = useAuth();
   const [tab, setTab] = useState('roadmap');
   const d = eduData;
 
@@ -23,7 +25,10 @@ export default function EduPage({ onBack }) {
       {/* Header */}
       <div style={{ padding:'32px 24px 12px', display:'flex', alignItems:'center', gap:12 }}>
         <div onClick={onBack} style={{ cursor:'pointer' }}><ChevronLeft size={24} color="#1A365D"/></div>
-        <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>학습 교육 & 진로·직업 로드맵</h2>
+        <div>
+          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>환영합니다, {userData?.name || '회원'}님</h2>
+          <div style={{ fontSize:13, color:'#43474E', marginTop:2 }}>학습 교육 & 진로·직업 로드맵</div>
+        </div>
       </div>
 
       {/* Tabs */}

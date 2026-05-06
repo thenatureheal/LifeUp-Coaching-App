@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Download, ShieldCheck, Equal, AlertTriangle, ChevronRight, BookOpen, Star, FileText } from 'lucide-react';
 import { analysisData } from '../data/analysisData';
+import { useAuth } from '../contexts/AuthContext';
 import AdBanner from '../components/AdBanner';
 
 const statusConfig = {
@@ -90,6 +91,7 @@ function ItemCard({ item, isOpen, onToggle }) {
 }
 
 export default function AnalysisPage({ onBack }) {
+  const { userData } = useAuth();
   const [selectedCat, setSelectedCat] = useState(null);
   const [openItem, setOpenItem] = useState(null);
   const { child, categories } = analysisData;
@@ -103,8 +105,8 @@ export default function AnalysisPage({ onBack }) {
           <ChevronLeft size={24} color="#1A365D"/>
         </div>
         <div style={{ flex:1 }}>
-          <h2 style={{ fontSize:20, margin:0 }}>{selectedCat ? cat.name : '종합 분석 리포트'}</h2>
-          <div style={{ fontSize:13, color:'#43474E' }}>{child.name} ({child.age}세) · {child.testDate}</div>
+          <h2 style={{ fontSize:20, margin:0 }}>환영합니다, {userData?.name || '회원'}님</h2>
+          <div style={{ fontSize:13, color:'#43474E' }}>{selectedCat ? cat.name : '종합 분석 리포트'}</div>
         </div>
         <div onClick={() => alert('PDF 다운로드 기능은 추후 연동됩니다.')} style={{ background:'#1A365D', color:'white', borderRadius:99, padding:'8px 14px', fontSize:12, fontWeight:700, cursor:'pointer', display:'flex', alignItems:'center', gap:4 }}>
           <Download size={14}/> PDF

@@ -10,7 +10,10 @@ export default function MyPage({ onBack, onLogout, onGoToShop }) {
       {/* Header */}
       <div style={{ padding:'32px 24px 12px', display:'flex', alignItems:'center', gap:12 }}>
         <div onClick={onBack} style={{ cursor:'pointer' }}><ChevronLeft size={24} color="#1A365D"/></div>
-        <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>마이페이지</h2>
+        <div style={{ flex:1 }}>
+          <h2 style={{ fontSize:18, margin:0, color:'#1A365D' }}>환영합니다, {currentUser?.displayName || '회원'}님</h2>
+          <div style={{ fontSize:12, color:'#43474E', marginTop:2 }}>마이페이지</div>
+        </div>
       </div>
 
       <div style={{ padding:'0 24px' }}>

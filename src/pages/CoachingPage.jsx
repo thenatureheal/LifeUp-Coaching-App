@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Heart, Brain, Sparkles } from 'lucide-react';
 import { coachingData } from '../data/coachingData';
+import { useAuth } from '../contexts/AuthContext';
 import AdBanner from '../components/AdBanner';
 
 const sts = { strength:{c:'#22C55E',b:'#F0FDF4',l:'강점'}, normal:{c:'#3B82F6',b:'#EFF6FF',l:'보통'}, attention:{c:'#F59E0B',b:'#FFFBEB',l:'관리필요'} };
@@ -95,6 +96,7 @@ function CareerCard({ career }) {
 }
 
 export default function CoachingPage({ onBack }) {
+  const { userData } = useAuth();
   const [tab, setTab] = useState('mind'); // 'mind' | 'ai'
   const [openCap, setOpenCap] = useState(null);
   const d = coachingData;
@@ -105,8 +107,8 @@ export default function CoachingPage({ onBack }) {
       <div style={{ padding:'32px 24px 16px', display:'flex', alignItems:'center', gap:12 }}>
         <div onClick={onBack} style={{ cursor:'pointer' }}><ChevronLeft size={24} color="#1A365D"/></div>
         <div>
-          <h2 style={{ fontSize:20, margin:0, color:'#1A365D' }}>마음 코칭 액션</h2>
-          <div style={{ fontSize:13, color:'#43474E', marginTop:2 }}>"왜 이 아이는 이렇게 행동할까?"</div>
+          <h2 style={{ fontSize:20, margin:0, color:'#1A365D' }}>환영합니다, {userData?.name || '회원'}님</h2>
+          <div style={{ fontSize:13, color:'#43474E', marginTop:2 }}>마음 코칭 액션</div>
         </div>
       </div>
 
