@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Heart, Brain, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Brain, Sparkles, Apple, Circle, CheckCircle2, MessageCircle, XCircle, BookOpen, Moon } from 'lucide-react';
 import { coachingData } from '../data/coachingData';
 import { useAuth } from '../contexts/AuthContext';
 import AdBanner from '../components/AdBanner';
@@ -111,6 +111,77 @@ export default function CoachingPage({ onBack }) {
           <div style={{ fontSize:13, color:'#43474E', marginTop:2 }}>마음 코칭 액션</div>
         </div>
       </div>
+
+      {/* Main Coaching Section */}
+      <section className="section">
+        <div className="coaching-board">
+          <div className="coaching-header">
+            <h3>오늘 저녁의 코칭</h3>
+            <div className="coaching-subtitle">맞춤형 플랜: 유아기 + 논리력 발달형</div>
+          </div>
+
+          <div className="task-group">
+            <div className="task-group-title"><Apple size={18} /> 오늘의 활동 미션</div>
+            <div className="checklist-item">
+              <Circle size={20} color="var(--text-muted)" />
+              <div className="checklist-text">종류 섞인 장난감 바구니에서, 크고 작은 것 2그룹으로만 분류해보기</div>
+            </div>
+            <div className="checklist-item">
+              <Circle size={20} color="var(--text-muted)" />
+              <div className="checklist-text">저녁 식사 준비할 때 수저 3세트 직접 짝맞춰 놓아보기</div>
+            </div>
+            <div className="checklist-item">
+              <CheckCircle2 size={20} color="var(--secondary)" />
+              <div className="checklist-text" style={{textDecoration: 'line-through', color: 'var(--text-muted)'}}>
+                오늘 입은 옷 스스로 바구니에 골인시키기
+              </div>
+            </div>
+          </div>
+
+          <div className="task-group">
+            <div className="task-group-title"><MessageCircle size={18} /> 오늘의 대화법</div>
+            <div className="ba-container">
+              <div className="ba-card ba-before">
+                <XCircle size={20} color="#991B1B" />
+                <div className="ba-content">
+                  <div className="ba-label">Before</div>
+                  <div className="ba-text">"그냥 엄마가 하라는 대로 해!"</div>
+                </div>
+              </div>
+              <div className="ba-card ba-after">
+                <CheckCircle2 size={20} color="#166534" />
+                <div className="ba-content">
+                  <div className="ba-label">After</div>
+                  <div className="ba-text">"윤서는 어떻게 생각해서 그렇게 한 거야? 이유를 말해줄래?"</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="task-group">
+            <div className="task-group-title"><BookOpen size={18} /> 오늘의 학습 미션</div>
+            <div className="checklist-item">
+              <Circle size={20} color="var(--text-muted)" />
+              <div className="checklist-text">잠들기 전 인과관계가 뚜렷한(왜 그럴까?) 그림책 1권 읽기</div>
+            </div>
+            <div className="checklist-item">
+              <Circle size={20} color="var(--text-muted)" />
+              <div className="checklist-text">재미있는 퍼즐 20피스짜리 함께 맞추기</div>
+            </div>
+            <div className="checklist-item">
+              <Circle size={20} color="var(--text-muted)" />
+              <div className="checklist-text">오늘 하루 제일 재미있었던 순서대로 3가지 말해보기</div>
+            </div>
+          </div>
+
+          <div className="task-group" style={{marginBottom: 0}}>
+            <div className="health-card">
+              <Moon size={20} />
+              <div className="health-text">오늘의 건강 체크: 저녁 공복에 유산균 꼭 챙겨먹이기</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Tab */}
       <div style={{ display:'flex', gap:8, padding:'0 24px 20px' }}>

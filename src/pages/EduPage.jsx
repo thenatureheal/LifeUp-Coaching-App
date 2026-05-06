@@ -8,8 +8,8 @@ const sts = { strength:{c:'#22C55E',b:'#F0FDF4',l:'강점'}, normal:{c:'#3B82F6'
 const typeColors = { study:'#6366F1', health:'#10B981', break:'#F59E0B', activity:'#EC4899' };
 
 const tabs = [
-  { k:'roadmap', l:'성공로드맵', I:Trophy },
   { k:'learn', l:'학습스타일', I:BookOpen },
+  { k:'roadmap', l:'성공로드맵', I:Trophy },
   { k:'academy', l:'학원매칭', I:GraduationCap },
   { k:'career', l:'진로·직업', I:Compass },
   { k:'community', l:'커뮤니티', I:MessageSquare },
@@ -17,7 +17,7 @@ const tabs = [
 
 export default function EduPage({ onBack }) {
   const { userData } = useAuth();
-  const [tab, setTab] = useState('roadmap');
+  const [tab, setTab] = useState('learn');
   const d = eduData;
 
   return (

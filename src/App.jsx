@@ -71,23 +71,6 @@ function HomePage({ onNavigate }) {
           </div>
         </div>
 
-        {/* 3 Genetic Strengths + Role Model Card */}
-        <div className="role-model-card">
-          <div className="strengths-row">
-            <span className="strength-chip"><BrainCircuit size={14}/> 논리력 상위 1%</span>
-            <span className="strength-chip"><Blocks size={14}/> 공간지각력 탁월</span>
-            <span className="strength-chip"><Target size={14}/> 과제집중력 강력</span>
-          </div>
-          
-          <div className="role-model-content">
-            <div className="role-model-avatar"><UserIcon size={24}/></div>
-            <div className="role-model-text">
-              <div className="role-model-label">윤서의 유전자형 성공 롤모델</div>
-              <div className="role-model-name">데미스 허사비스 (구글 딥마인드 CEO)</div>
-              <div className="role-model-fact"><Lightbulb size={14} style={{display:'inline', marginBottom:'-2px'}}/> 뉴스 보도: "4세 체스 시작, 8세 프로그래밍 독학"</div>
-            </div>
-          </div>
-        </div>
       </header>
 
       {/* 7세 맞춤 고민 & 솔루션 */}
@@ -113,77 +96,6 @@ function HomePage({ onNavigate }) {
             <div className="concern-title">친구 물건을 자꾸 말 없이 가져가요.</div>
             <div className="concern-solution">
               빌려주는 개념을 아직 정확히 모를 수 있습니다. "이건 친구 꺼라 빌려달라고 먼저 말해야 해" 라고 명확한 룰을 알려주세요.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Coaching Section */}
-      <section className="section">
-        <div className="coaching-board">
-          <div className="coaching-header">
-            <h3>오늘 저녁의 코칭</h3>
-            <div className="coaching-subtitle">맞춤형 플랜: 유아기 + 논리력 발달형</div>
-          </div>
-
-          <div className="task-group">
-            <div className="task-group-title"><Apple size={18} /> 오늘의 활동 미션</div>
-            <div className="checklist-item">
-              <Circle size={20} color="var(--text-muted)" />
-              <div className="checklist-text">종류 섞인 장난감 바구니에서, 크고 작은 것 2그룹으로만 분류해보기</div>
-            </div>
-            <div className="checklist-item">
-              <Circle size={20} color="var(--text-muted)" />
-              <div className="checklist-text">저녁 식사 준비할 때 수저 3세트 직접 짝맞춰 놓아보기</div>
-            </div>
-            <div className="checklist-item">
-              <CheckCircle2 size={20} color="var(--secondary)" />
-              <div className="checklist-text" style={{textDecoration: 'line-through', color: 'var(--text-muted)'}}>
-                오늘 입은 옷 스스로 바구니에 골인시키기
-              </div>
-            </div>
-          </div>
-
-          <div className="task-group">
-            <div className="task-group-title"><MessageCircle size={18} /> 오늘의 대화법</div>
-            <div className="ba-container">
-              <div className="ba-card ba-before">
-                <XCircle size={20} color="#991B1B" />
-                <div className="ba-content">
-                  <div className="ba-label">Before</div>
-                  <div className="ba-text">"그냥 엄마가 하라는 대로 해!"</div>
-                </div>
-              </div>
-              <div className="ba-card ba-after">
-                <CheckCircle2 size={20} color="#166534" />
-                <div className="ba-content">
-                  <div className="ba-label">After</div>
-                  <div className="ba-text">"윤서는 어떻게 생각해서 그렇게 한 거야? 이유를 말해줄래?"</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="task-group">
-            <div className="task-group-title"><BookOpen size={18} /> 오늘의 학습 미션</div>
-            <div className="checklist-item">
-              <Circle size={20} color="var(--text-muted)" />
-              <div className="checklist-text">잠들기 전 인과관계가 뚜렷한(왜 그럴까?) 그림책 1권 읽기</div>
-            </div>
-            <div className="checklist-item">
-              <Circle size={20} color="var(--text-muted)" />
-              <div className="checklist-text">재미있는 퍼즐 20피스짜리 함께 맞추기</div>
-            </div>
-            <div className="checklist-item">
-              <Circle size={20} color="var(--text-muted)" />
-              <div className="checklist-text">오늘 하루 제일 재미있었던 순서대로 3가지 말해보기</div>
-            </div>
-          </div>
-
-          <div className="task-group" style={{marginBottom: 0}}>
-            <div className="health-card">
-              <Moon size={20} />
-              <div className="health-text">오늘의 건강 체크: 저녁 공복에 유산균 꼭 챙겨먹이기</div>
             </div>
           </div>
         </div>
@@ -327,7 +239,17 @@ function HomePage({ onNavigate }) {
 }
 
 function AppContent() {
-  const [page, setPage] = useState('landing');
+  const getInitialPage = () => {
+    const path = window.location.pathname;
+    if (path.includes('/mypage')) return 'mypage';
+    if (path.includes('/coaching')) return 'coaching';
+    if (path.includes('/analysis')) return 'analysis';
+    if (path.includes('/edu')) return 'edu';
+    if (path.includes('/diary')) return 'diary';
+    if (path.includes('/home')) return 'home';
+    return 'landing';
+  };
+  const [page, setPage] = useState(getInitialPage());
   const [selectedKit, setSelectedKit] = useState(null);
   const { currentUser, logout } = useAuth();
 
@@ -336,14 +258,14 @@ function AppContent() {
                      new URLSearchParams(window.location.search).get('embedded') === 'true';
 
   React.useEffect(() => {
-    // 임베드 모드: Spring Boot에서 이미 인증됨 → 바로 코칭으로
+    // 임베드 모드: Spring Boot에서 이미 인증됨 → 바로 분석으로
     if (isEmbedded && ['landing', 'login', 'signup'].includes(page)) {
-      setPage('coaching');
+      setPage('analysis');
       return;
     }
-    // 이미 인증된 유저가 퍼블릭 페이지에 있다면 코칭으로
+    // 이미 인증된 유저가 퍼블릭 페이지에 있다면 분석으로
     if (currentUser && ['landing', 'login', 'signup'].includes(page)) {
-      setPage('coaching');
+      setPage('analysis');
     }
     // 미인증 유저가 보호된 페이지에 있다면 랜딩으로 (임베드 모드에서는 제외)
     else if (!currentUser && !isEmbedded && !['landing', 'login', 'signup', 'shop', 'checkout'].includes(page)) {
