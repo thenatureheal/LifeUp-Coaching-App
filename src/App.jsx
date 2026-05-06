@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, LineChart, CheckCircle, User as UserIcon, Bell, Apple, MessageCircle, BookOpen, CheckCircle2, Circle, XCircle, Moon, Code2, GraduationCap, Trophy, ExternalLink, BrainCircuit, Blocks, Target, Lightbulb, CalendarHeart, Dna, ArrowRight } from 'lucide-react';
+import { Home, LineChart, CheckCircle, User as UserIcon, Bell, Apple, MessageCircle, BookOpen, CheckCircle2, Circle, XCircle, Moon, Code2, GraduationCap, Trophy, ExternalLink, BrainCircuit, Blocks, Target, Lightbulb, CalendarHeart, Dna, ArrowRight, LogOut } from 'lucide-react';
 import AnalysisPage from './pages/AnalysisPage';
 import CoachingPage from './pages/CoachingPage';
 import EduPage from './pages/EduPage';
@@ -17,7 +17,7 @@ import ShopPage from './pages/ShopPage';
 import CheckoutPage from './pages/CheckoutPage';
 
 function HomePage({ onNavigate }) {
-  const { userData } = useAuth();
+  const { userData, logout } = useAuth();
 
   if (userData && userData.hasAnalysis === false) {
     return (
@@ -52,13 +52,22 @@ function HomePage({ onNavigate }) {
       <header className="header">
         <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start'}}>
           <div>
-            <div className="welcome-title">환영합니다, 윤서 어머님</div>
+            <div className="welcome-title">환영합니다, {userData?.name || '회원'}님</div>
             <h1 className="child-profile">
               윤서 <span className="child-badge">7세 / 유아기</span>
             </h1>
           </div>
-          <div onClick={() => onNavigate('health')} style={{cursor:'pointer', background:'#EFF6FF', borderRadius:99, padding:8}}>
-            <Bell color="var(--primary)" size={22} />
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <div onClick={() => onNavigate('health')} style={{cursor:'pointer', background:'#EFF6FF', borderRadius:99, padding:8}}>
+              <Bell color="var(--primary)" size={22} />
+            </div>
+            <div onClick={async () => {
+              await logout();
+              window.location.href = '/';
+            }} style={{cursor:'pointer', background:'#FEF2F2', borderRadius:99, padding:'8px 12px', display: 'flex', alignItems: 'center', gap: 6}}>
+              <LogOut color="#EF4444" size={16} />
+              <span style={{color: '#EF4444', fontSize: 13, fontWeight: 700}}>로그아웃</span>
+            </div>
           </div>
         </div>
 
@@ -370,7 +379,7 @@ function AppContent() {
         <MyPage 
           onBack={() => setPage('home')} 
           onGoToShop={() => setPage('shop')} 
-          onLogout={() => { logout(); setPage('landing'); }} 
+          onLogout={async () => { await logout(); window.location.href = '/'; }} 
         />
       )}
       
