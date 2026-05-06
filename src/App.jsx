@@ -336,14 +336,14 @@ function AppContent() {
                      new URLSearchParams(window.location.search).get('embedded') === 'true';
 
   React.useEffect(() => {
-    // 임베드 모드: Spring Boot에서 이미 인증됨 → 바로 홈으로
+    // 임베드 모드: Spring Boot에서 이미 인증됨 → 바로 코칭으로
     if (isEmbedded && ['landing', 'login', 'signup'].includes(page)) {
-      setPage('home');
+      setPage('coaching');
       return;
     }
-    // 이미 인증된 유저가 퍼블릭 페이지에 있다면 홈으로
+    // 이미 인증된 유저가 퍼블릭 페이지에 있다면 코칭으로
     if (currentUser && ['landing', 'login', 'signup'].includes(page)) {
-      setPage('home');
+      setPage('coaching');
     }
     // 미인증 유저가 보호된 페이지에 있다면 랜딩으로 (임베드 모드에서는 제외)
     else if (!currentUser && !isEmbedded && !['landing', 'login', 'signup', 'shop', 'checkout'].includes(page)) {
@@ -420,10 +420,12 @@ function AppContent() {
           <BookOpen size={22} />
           <span className="nav-label">학습</span>
         </div>
+        {/*
         <div className={`nav-item ${page === 'diary' ? 'active' : ''}`} onClick={() => setPage('diary')}>
           <CalendarHeart size={22} />
           <span className="nav-label">성장일기</span>
         </div>
+        */}
         <div className={`nav-item ${page === 'mypage' ? 'active' : ''}`} onClick={() => setPage('mypage')}>
           <UserIcon size={22} />
           <span className="nav-label">MY</span>
