@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
 
 /* ============================================
    LifeUp Kids — Premium Design System v2.0
@@ -189,7 +190,7 @@ html {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   background-color: #000;
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
@@ -206,7 +207,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Pretendard', 'Manrope', sans-serif;
   color: var(--primary);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -276,7 +277,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-full);
   font-size: 13px;
   color: var(--text-muted);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-weight: 600;
 }
 
@@ -944,7 +945,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-spring);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .modal-btn:active {
