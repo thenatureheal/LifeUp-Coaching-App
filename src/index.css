@@ -759,7 +759,6 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   box-shadow: 0 -4px 40px rgba(26, 54, 93, 0.08);
   z-index: 100;
-  animation: slideInUp var(--duration-slow) var(--ease-out);
 }
 
 .nav-item {
