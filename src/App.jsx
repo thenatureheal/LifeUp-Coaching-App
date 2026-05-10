@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Home, LineChart, CheckCircle, User as UserIcon, Bell, Apple, MessageCircle, BookOpen, CheckCircle2, Circle, XCircle, Moon, Code2, GraduationCap, Trophy, ExternalLink, BrainCircuit, Blocks, Target, Lightbulb, CalendarHeart, Dna, ArrowRight } from 'lucide-react';
 import AnalysisPage from './pages/AnalysisPage';
 import CoachingPage from './pages/CoachingPage';
@@ -317,22 +317,69 @@ function HomePage({ onNavigate }) {
   );
 }
 
+// URL pathname 기반 초기 페이지 결정 (Spring `/app/*` 라우트 → React 페이지 매핑)
+function getInitialPageFromUrl() {
+  if (typeof window === 'undefined') return 'landing';
+  const path = window.location.pathname.replace(/\/+$/, ''); // trailing slash 제거
+  // /app/analysis, /app/coaching, /app/edu, /app/mypage, /app/diary, /app/health, /app/shop, /app/checkout, /app/home
+  const map = {
+    '/app/analysis': 'analysis',
+    '/app/coaching': 'coaching',
+    '/app/edu': 'edu',
+    '/app/mypage': 'mypage',
+    '/app/diary': 'diary',
+    '/app/health': 'health',
+    '/app/shop': 'shop',
+    '/app/checkout': 'checkout',
+    '/app/home': 'home',
+    '/app': 'home',
+    '': 'home'
+  };
+  return map[path] !== undefined ? map[path] : 'home';
+}
+
 function AppContent() {
-  const [page, setPage] = useState('landing');
+  const [page, setPage] = useState(getInitialPageFromUrl);
   const [selectedKit, setSelectedKit] = useState(null);
+  const [springUser, setSpringUser] = useState(null);
+  const [authLoaded, setAuthLoaded] = useState(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const { currentUser, logout } = useAuth();
 
-  React.useEffect(() => {
-    // 이미 인증된 유저가 퍼블릭 페이지에 있다면 홈으로
-    if (currentUser && ['landing', 'login', 'signup'].includes(page)) {
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { setSpringUser(d); setAuthLoaded(true); })
+      .catch(() => setAuthLoaded(true));
+  }, []);
+
+  const isTestUser = springUser?.email === 'test';
+  const GUARDED = ['analysis','coaching','edu','mypage'];
+  const goWithGuard = (target) => {
+    if (isTestUser) setPage(target);
+    else setPaymentModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (!authLoaded) return;
+    if (GUARDED.includes(page) && !isTestUser) {
+      setPaymentModalOpen(true);
       setPage('home');
+      window.history.replaceState({}, '', '/app/home');
     }
-    // 미인증 유저가 보호된 페이지에 있다면 랜딩으로
-    else if (!currentUser && !['landing', 'login', 'signup', 'shop', 'checkout'].includes(page)) {
-      // (스토어 관련은 로그인하지 않아도 볼 수 있도록 허용하거나, 로그인 요구 시 includes에서 빼기. 일단 로그인 안 해도 접근 불가로 통일)
-      setPage('landing');
+  }, [authLoaded, page, isTestUser]);
+
+  // 페이지 변경 시 URL도 동기화 (브라우저 뒤로가기 자연스럽게)
+  React.useEffect(() => {
+    const desired = '/app/' + (page === 'home' ? 'home' : page);
+    if (window.location.pathname !== desired && !['landing', 'login', 'signup'].includes(page)) {
+      window.history.replaceState({}, '', desired);
     }
-  }, [currentUser, page]);
+  }, [page]);
+
+  // 시연용 (2026-05-08): Spring SecurityContext를 신뢰. React 안 currentUser 기반 redirect 비활성화.
+  // (이유) AuthContext가 Firebase Auth라 Spring 세션과 별개. BP-01 Firebase 폐기 결정에 따라 향후 Spring 세션 동기화로 대체 예정.
+  // 현재는 URL 따라 페이지 표시 + Spring SecurityConfig가 보호 라우트 인증 강제.
 
   return (
     <div className="app-container">
@@ -383,34 +430,46 @@ function AppContent() {
       {/* AI 코칭 챗봇 — 메인 앱 페이지에서만 표시 */}
       {!['landing','login','signup'].includes(page) && <ChatBot />}
 
-      {/* Bottom Navigation — 인증/결제 플로우에서는 숨김 */}
+      {/* Bottom Navigation — 인덱스 tab-bar와 통일 5탭 (성장일기 제거, 홈은 메인 / 으로) */}
       {!['landing','login','signup','checkout'].includes(page) && (
       <nav className="bottom-nav">
-        <div className={`nav-item ${page === 'home' ? 'active' : ''}`} onClick={() => setPage('home')}>
+        <div className="nav-item" onClick={() => { window.location.href = '/'; }}>
           <Home size={22} />
           <span className="nav-label">홈</span>
         </div>
-        <div className={`nav-item ${page === 'analysis' ? 'active' : ''}`} onClick={() => setPage('analysis')}>
+        <div className={`nav-item ${page === 'analysis' ? 'active' : ''}`} onClick={() => goWithGuard('analysis')}>
           <LineChart size={22} />
           <span className="nav-label">분석</span>
         </div>
-        <div className={`nav-item ${page === 'coaching' ? 'active' : ''}`} onClick={() => setPage('coaching')}>
+        <div className={`nav-item ${page === 'coaching' ? 'active' : ''}`} onClick={() => goWithGuard('coaching')}>
           <CheckCircle size={22} />
           <span className="nav-label">코칭</span>
         </div>
-        <div className={`nav-item ${page === 'edu' ? 'active' : ''}`} onClick={() => setPage('edu')}>
+        <div className={`nav-item ${page === 'edu' ? 'active' : ''}`} onClick={() => goWithGuard('edu')}>
           <BookOpen size={22} />
           <span className="nav-label">학습</span>
         </div>
-        <div className={`nav-item ${page === 'diary' ? 'active' : ''}`} onClick={() => setPage('diary')}>
-          <CalendarHeart size={22} />
-          <span className="nav-label">성장일기</span>
-        </div>
-        <div className={`nav-item ${page === 'mypage' ? 'active' : ''}`} onClick={() => setPage('mypage')}>
+        <div className={`nav-item ${page === 'mypage' ? 'active' : ''}`} onClick={() => goWithGuard('mypage')}>
           <UserIcon size={22} />
           <span className="nav-label">MY</span>
         </div>
       </nav>
+      )}
+
+      {paymentModalOpen && (
+        <div onClick={() => setPaymentModalOpen(false)} style={{position:'fixed', inset:0, background:'rgba(15,23,42,0.8)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)', display:'flex', alignItems:'center', justifyContent:'center', padding:16, zIndex:9999}}>
+          <div onClick={e => e.stopPropagation()} style={{background:'white', borderRadius:24, padding:32, maxWidth:420, width:'100%', textAlign:'center', boxShadow:'0 32px 64px -16px rgba(0,0,0,0.2)'}}>
+            <div style={{width:64, height:64, background:'#FEF3C7', color:'#F59E0B', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 24px'}}>
+              <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <h2 style={{fontSize:20, fontWeight:900, color:'#0F172A', margin:'0 0 12px'}}>아직 결제되지 않은 계정정보입니다</h2>
+            <p style={{fontSize:14, color:'#475569', margin:'0 0 24px'}}>관리자에게 문의해주세요.</p>
+            <div style={{background:'#0F172A', color:'white', borderRadius:16, padding:'16px 24px', fontSize:18, fontWeight:900, letterSpacing:1.5}}>
+              010-6407-0988
+            </div>
+            <button onClick={() => setPaymentModalOpen(false)} style={{marginTop:20, fontSize:13, color:'#94A3B8', background:'none', border:'none', cursor:'pointer'}}>닫기</button>
+          </div>
+        </div>
       )}
     </div>
   );

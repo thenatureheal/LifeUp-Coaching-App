@@ -1,9 +1,24 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight, User, Baby, Bell, BellOff, ShoppingBag, HelpCircle, Shield, LogOut, Settings, Phone, Mail, Package, Truck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, User, Baby, Bell, BellOff, ShoppingBag, HelpCircle, Shield, LogOut, Settings, Phone, Mail, Package, Truck, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function MyPage({ onBack, onLogout, onGoToShop }) {
   const { currentUser } = useAuth();
+  // Spring 인증 정보 fetch (BP-01 Firebase 폐기 결정에 따라)
+  const [springUser, setSpringUser] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data) setSpringUser(data); })
+      .catch(() => {});
+  }, []);
+
+  // 사용자 이름: Spring 우선, Firebase fallback, 마지막 '사용자'
+  const displayName = springUser?.name || currentUser?.displayName || '사용자';
+  const displayEmail = springUser?.email || currentUser?.email || '';
+  // 영업 대시보드 권한: ADMIN/OPERATOR/SELLER
+  const isBizUser = springUser?.role && /ADMIN|OPERATOR|SELLER/i.test(springUser.role);
 
   return (
     <div style={{ paddingBottom:100 }}>
@@ -33,8 +48,8 @@ export default function MyPage({ onBack, onLogout, onGoToShop }) {
               <User size={28} color="white"/>
             </div>
             <div>
-              <div style={{ fontSize:18, fontWeight:800 }}>{currentUser?.displayName || '이름 없음'} 어머님</div>
-              <div style={{ fontSize:13, opacity:0.8, marginTop:2 }}>{currentUser?.email || '이메일 없음'}</div>
+              <div style={{ fontSize:18, fontWeight:800 }}>{displayName} 님</div>
+              <div style={{ fontSize:13, opacity:0.8, marginTop:2 }}>{displayEmail}</div>
             </div>
           </div>
           <div style={{ display:'flex', gap:8, marginTop:16 }}>
@@ -106,6 +121,19 @@ export default function MyPage({ onBack, onLogout, onGoToShop }) {
               <ChevronRight size={16} color="#C4C4C4"/>
             </div>
           ))}
+        </div>
+
+        {/* 영업 대시보드 (데모) 진입 */}
+        <div style={{ fontSize:13, color:'#74777F', fontWeight:700, marginBottom:10, padding:'0 4px' }}>영업</div>
+        <div onClick={() => { window.location.href = '/?page=seller'; }} style={{ background:'white', borderRadius:16, padding:'14px 16px', display:'flex', alignItems:'center', gap:12, cursor:'pointer', marginBottom:20, boxShadow:'0 2px 10px rgba(0,0,0,0.02)' }}>
+          <div style={{ width:36, height:36, borderRadius:10, background:'#EFF6FF', display:'flex', alignItems:'center', justifyContent:'center', color:'#3B82F6' }}>
+            <BarChart3 size={18} />
+          </div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:14, fontWeight:600 }}>영업 대시보드 (데모)</div>
+            <div style={{ fontSize:11, color:'#74777F' }}>추천 고객 · 정산 시뮬레이션</div>
+          </div>
+          <ChevronRight size={16} color="#C4C4C4"/>
         </div>
 
         {/* 6.3 앱 및 푸시 알림 설정 */}

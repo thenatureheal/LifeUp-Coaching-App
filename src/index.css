@@ -6,17 +6,17 @@
    ============================================ */
 
 :root {
-  /* Primary Palette */
-  --primary: #1A365D;
-  --primary-light: #2D4A7A;
-  --primary-dark: #0F2440;
-  --primary-gradient: linear-gradient(135deg, #002045, #1A365D);
-  --primary-glow: linear-gradient(135deg, #1A365D, #2563EB);
+  /* Primary Palette — lifeup_demo navy 톤 통일 (2026-05-08) */
+  --primary: #1a1e8f;
+  --primary-light: #2228b0;
+  --primary-dark: #0f1260;
+  --primary-gradient: linear-gradient(135deg, #0a0d4a, #1a1e8f);
+  --primary-glow: linear-gradient(135deg, #1a1e8f, #2228b0);
 
-  /* Secondary & Tertiary */
-  --secondary: #2DD4BF;
-  --secondary-light: #5EEAD4;
-  --secondary-dark: #14B8A6;
+  /* Secondary & Tertiary — gold (lifeup_demo) */
+  --secondary: #fbbf24;
+  --secondary-light: #fcd34d;
+  --secondary-dark: #d97706;
   --tertiary: #F87171;
   --tertiary-light: #FCA5A5;
 
@@ -758,7 +758,6 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   box-shadow: 0 -4px 40px rgba(26, 54, 93, 0.08);
   z-index: 100;
-  animation: slideInUp var(--duration-slow) var(--ease-out);
 }
 
 .nav-item {
